@@ -82,6 +82,10 @@ if __name__ == '__main__':
 
     key = ''.join(sorted(args.letters))
 
+    if len(key) != DISTINCT_LETTER_COUNT or not key.isalpha():
+        print('The letters supplied are not seven distinct letters.')
+        exit(1)
+
     print(json.dumps(
         sorted(word for word in word_map.get(key) if args.center_letter in word),
         indent=2,
