@@ -82,7 +82,8 @@ if __name__ == '__main__':
 
     word_map: Dict[str, List[str]] = load_word_map(args.map_file)
 
-    key = ''.join(sorted(args.letters))
+    # dedupe and sort the input letters
+    key = ''.join(sorted(set(args.letters)))
 
     if len(key) != DISTINCT_LETTER_COUNT or not key.isalpha():
         print('The letters supplied are not seven distinct letters.')
