@@ -1,6 +1,7 @@
 import json
 import argparse
 import multiprocessing
+from typing import Dict, List, Set, Tuple
 
 
 MINIMUM_WORD_LENGTH = 4
@@ -13,7 +14,7 @@ def partition(l, n):
         yield l[i:i+n]
 
 
-def assign_to_map(data):
+def assign_to_map(data: Tuple[Dict[str, List[str]], List[str]]) -> Dict[str, Set]:
     base_word_map, candidates = data
     sub_map = {}
 
@@ -26,7 +27,7 @@ def assign_to_map(data):
     return sub_map
 
 
-def populate_word_map():
+def populate_word_map() -> Dict[str, List[str]]:
     word_map = {}
 
     with open(DICTIONARY_FILE_PATH) as f:
@@ -62,9 +63,9 @@ def populate_word_map():
     return word_map
 
 
-def load_word_map():
+def load_word_map(map_file_path: str) -> Dict[str, List[str]]:
     try:
-        with open('spelling-bee-map.json') as f:
+        with open(map_file_path) as f:
             word_map = json.load(f)
     except:
         word_map = populate_word_map()
@@ -76,9 +77,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('letters')
     parser.add_argument('center_letter')
+    parser.add_argument('-m', '--map-file', help='Path to map file', default='spelling-bee-map.json')
     args = parser.parse_args()
 
-    word_map = load_word_map()
+    word_map: Dict[str, List[str]] = load_word_map(args.map_file)
 
     key = ''.join(sorted(args.letters))
 
